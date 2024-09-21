@@ -1,11 +1,23 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import {useState} from 'react'
 import SearchBar from './components/SearchBar';
 import Banner from './components/Banner';
+import { fetchSearchResults } from './services/api';
+import { SearchResultsItem, SearchResultsResponse } from './types/SearchResults';
+import SearchResults from './components/SearchResults';
 
 function App() {
-  const handleSearch = () => {
+  const [results, setResults] = useState<SearchResultsResponse | null>(null)
+
+  const handleSearch = async () => {
+    const search_results = await fetchSearchResults("Hello")
+    console.log(search_results)
+    console.log(search_results.ResultItems)
+    if (search_results) {
+      setResults(search_results)
+    }
 
   }
 
@@ -15,10 +27,13 @@ function App() {
   }
 
   return (
-    <div>
+    <div className = "flex flex-col relative w-full min-h-screen pb-8">
       <Banner />
-      <div className="absolute shadow-lg w-full" style={{ top: '24px', height: '152px'}}>
+      <div className="shadow-lg" style={{ top: '24px', height: '152px'}}>
         <SearchBar onSearch={handleSearch} onClear={handleClear} />
+      </div>
+      <div className = "flex-1">
+        {results ? <SearchResults results = {results}/> : <></>} 
       </div>
       
     </div>

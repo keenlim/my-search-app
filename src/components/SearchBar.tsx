@@ -11,7 +11,6 @@ const SearchBar: React.FC<SearchBarProps> = ({onSearch, onClear}) => {
     const [query, setQuery] = useState<string>('')
 
     const handleSearch = async () => {
-        await fetchSearchResults("Hello")
         console.log(query)
         onSearch(query)
     }
@@ -22,7 +21,7 @@ const SearchBar: React.FC<SearchBarProps> = ({onSearch, onClear}) => {
     }
 
     return (
-        <div className="absolute" style={{ top: '48px', left: '160px', width: '1120px', height: '48px' }}>
+        <div className="relative" style={{ top: '48px', left: '160px', width: '1120px', height: '48px' }}>
             <div className = "flex items-center h-full gap-0 border border-gray-300 rounded-lg overflow-hidden">
                 <input 
                     type="text"

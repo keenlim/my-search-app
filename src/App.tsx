@@ -5,14 +5,14 @@ import {useState} from 'react'
 import SearchBar from './components/SearchBar';
 import Banner from './components/Banner';
 import { fetchSearchResults } from './services/api';
-import { SearchResultsItem, SearchResultsResponse } from './types/SearchResults';
+import { SearchResultsResponse } from './types/SearchResults';
 import SearchResults from './components/SearchResults';
 
 function App() {
   const [results, setResults] = useState<SearchResultsResponse | null>(null)
 
-  const handleSearch = async () => {
-    const search_results = await fetchSearchResults("Hello")
+  const handleSearch = async (query: string) => {
+    const search_results = await fetchSearchResults(query)
     console.log(search_results)
     console.log(search_results.ResultItems)
     if (search_results) {

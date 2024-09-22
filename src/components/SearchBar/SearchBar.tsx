@@ -1,20 +1,22 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import { IconSearch, IconX } from '@tabler/icons-react';
-import { fetchSearchResults, fetchSuggestions } from '../services/api';
-import useDebounce from '../hooks/useDebounce';
-import SuggestionDropdown from './SuggestionDropdown';
+import { fetchSuggestions } from '../../services/api';
+import useDebounce from '../../hooks/useDebounce';
+import SuggestionDropdown from '../SuggestionDropdown';
 
 interface SearchBarProps {
     onSearch: (query: string) => void;
-    onClear: () => void;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({onSearch, onClear}) => {
+const SearchBar: React.FC<SearchBarProps> = ({onSearch}) => {
     const [query, setQuery] = useState<string>('');
     const [suggestions, setSuggestions] = useState<string[]>([]);
     const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
     const [removeSuggestions, setRemoveSuggestions] = useState<boolean>(false);
     const [activeSuggestion, setActiveSuggestion] = useState<number>(-1);
+
+    // Create a ref for the input element
+    const inputRef = useRef<HTMLInputElement>(null);
 
     // Reduce unnecessary API requests 
     const debouncedQuery = useDebounce(query, 100);
@@ -53,15 +55,8 @@ const SearchBar: React.FC<SearchBarProps> = ({onSearch, onClear}) => {
         setSuggestions([]);
         setShowSuggestions(false);
         setRemoveSuggestions(false);
-        onClear();
+        inputRef.current?.focus(); // Set focus back to the input field
     }
-
-    // const handleKeyDown = (event: any) => {
-    //     if (event.key === 'Enter' && !event.shiftKey) {
-    //       event.preventDefault();
-    //       handleSearch()
-    //     }
-    //   };
 
       const handleSuggestionClick = (suggestions: string) => {
         setSuggestions([]);
@@ -106,6 +101,7 @@ const SearchBar: React.FC<SearchBarProps> = ({onSearch, onClear}) => {
         <div className="relative" style={{ top: '48px', left: '160px', width: '1120px', height: '48px' }}>
             <div className = "flex items-center h-full gap-0 border border-gray-300 rounded-lg overflow-hidden">
                 <input 
+                    ref = {inputRef} // Attach the ref to the input element
                     type="text"
                     className = "flex-grow px-4 h-full outline-none"
                     placeholder = "Search"

@@ -2,7 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import {useState} from 'react'
-import SearchBar from './components/SearchBar';
+import SearchBar from './components/SearchBar/SearchBar';
 import Banner from './components/Banner';
 import { fetchSearchResults } from './services/api';
 import { SearchResultsResponse } from './types/SearchResults';
@@ -21,16 +21,11 @@ function App() {
 
   }
 
-  const handleClear = () => {
-    
-
-  }
-
   return (
     <div className = "flex flex-col relative w-full min-h-screen pb-8">
       <Banner />
       <div className="shadow-lg" style={{ top: '24px', height: '152px'}}>
-        <SearchBar onSearch={handleSearch} onClear={handleClear} />
+        <SearchBar onSearch={handleSearch} />
       </div>
       <div className = "flex-1">
         {results ? <SearchResults results = {results}/> : <></>} 
